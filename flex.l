@@ -1,8 +1,9 @@
 %{
 
 #include <stdio.h>
-// #include "bison.tab.h"
+#include "bison.tab.h"
 
+/*
 enum tokenType {
 
 	REG = 258,
@@ -15,10 +16,12 @@ enum tokenType {
 	SR = 265,
 	MOV = 266,
 	J = 267,
-	LW = 268,
-	SW = 269
+	LB = 268,
+	SB = 269,
+	NL = 270
 
 };
+*/
 
 int yylval;
 
@@ -37,12 +40,13 @@ int regToNum(const char * text);
 "BEQ"		{ return BEQ; }
 "SL"		{ return SL; }
 "SR"		{ return SR; }
-"M0V"		{ return MOV; }
+"MOV"		{ return MOV; }
 "J"		{ return J; }
 
-"LW"		{ return LW; }
-"SW"		{ return SW; }
+"LB"		{ return LB; }
+"SB"		{ return SB; }
 
+\n		{ return NL; }
 [ \t]		{ }
 .		{ printf("unknown\n"); }
 
@@ -50,6 +54,7 @@ int regToNum(const char * text);
 
 %%
 
+/*
 int main(int argc, char **argv)
 {
   int tok;
@@ -61,6 +66,7 @@ int main(int argc, char **argv)
     else printf("\n");
   }
 }
+*/
 
 // returns the register number of a regsiter token 
 int regToNum(const char * text) {

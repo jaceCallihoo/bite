@@ -64,9 +64,10 @@ extern int yydebug;
     SR = 265,                      /* SR  */
     J = 266,                       /* J  */
     MOV = 267,                     /* MOV  */
-    LW = 268,                      /* LW  */
-    SW = 269,                      /* SW  */
-    EOL = 270                      /* EOL  */
+    LB = 268,                      /* LB  */
+    SB = 269,                      /* SB  */
+    NL = 270,                      /* NL  */
+    EOL = 271                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
