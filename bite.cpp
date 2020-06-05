@@ -266,7 +266,7 @@ size_t strtoi(string s) {
         if (s[i] < 48 || s[i] > 57)
             return SIZE_T_MAX;
         else
-            ret += s[i];
+            ret += s[i] - 48;
    } 
 
    return ret;
