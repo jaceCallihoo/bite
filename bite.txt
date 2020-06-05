@@ -1,4 +1,6 @@
 MOV $1 $2
+J name
 ADD $1 $2 $3 // nasehuoneuh
 
+name:
 ADD $3 $3 $3

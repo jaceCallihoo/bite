@@ -30,4 +30,7 @@ class Bite {
         bool tokenError(vector<vector<string>> inputTokens);
         vector<vector<string>> reduceTokens(vector<vector<string>> inputTokens);
 
+        bool isValidReg(string token);
+        bool isValidNum(string token);
+
 };

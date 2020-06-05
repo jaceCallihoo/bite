@@ -30,7 +30,7 @@ Bite::Bite(string fileName  = "bite.txt") {
 
     for (vector<string> v : inputTokens) {
         for (string s : v) {
-            cout << s << " | ";
+            cout << " <" << s << "> ";
         }
         cout << endl;
     }
@@ -41,7 +41,7 @@ Bite::Bite(string fileName  = "bite.txt") {
 
     for (vector<string> v : inputTokens) {
         for (string s : v) {
-            cout << s << " | ";
+            cout << " <" << s << "> ";
         }
         cout << endl;
     }
@@ -96,24 +96,48 @@ vector<vector<string>> Bite::tokenize(vector<string> inputText) {
 
 
 
-// removes comments and white spaces in the token list
+// removes comments and white spaces and comments in the token list
+// TODO: change addresses to numbers
 vector<vector<string>> Bite::reduceTokens(vector<vector<string>> inputTokens) {
 
-    for (size_t i = 0; i < inputTokens.size(); i++) {
-        cout << "token: " << i << endl;
-
-        // if this string is an empty line, remove it
-        if (inputTokens[i].size() == 0) {
-            cout << "remove line" << endl;
-            inputTokens.erase(inputTokens.begin() + i);
-        }
+    for (size_t line = 0; line < inputTokens.size(); line++) {
+        cout << "line: " << line << endl;
 
         // remove any comments
-        for (size_t j = 0; j < inputTokens[i].size(); j++) {
-            if (inputTokens[i][j][0] == '/' && inputTokens[i][j][1] == '/') {
-                cout << "erase from token: " << j << endl;
-                inputTokens[i].erase(inputTokens[i].begin() + j, inputTokens[i].end());
+        for (size_t i = 0; i < inputTokens[line].size(); i++) {
+            if (inputTokens[line][i][0] == '/' && inputTokens[line][i][1] == '/') {
+                cout << "erase from token: " << i << endl;
+                inputTokens[line].erase(inputTokens[line].begin() + i, inputTokens[line].end());
             }
+        }
+
+        // if this string is an empty line, remove it
+        if (inputTokens[line].size() == 0) {
+            cout << "remove line" << endl;
+            inputTokens.erase(inputTokens.begin() + line);
+            line--;        // set line to account for the removed line
+            continue;   // dont check for any more things
+        }
+
+        // change address names to numbers
+        if (inputTokens[line][0][inputTokens[line][0].size() - 1] == ':') {
+            cout << "address at: " << line << endl;
+
+              // search throug all tokens
+            for (size_t i = 0; i < inputTokens.size(); i++) {
+                for (size_t j = 0; j < inputTokens[i].size(); j++) {
+                    // if the token is equal to the name of the address, change it to i
+                    if (inputTokens[i][j].compare(inputTokens[line][0].substr(0, inputTokens[line][0].size() - 1)) == 0) {
+                        cout << "address to number at: " << i << " " << j << endl;
+                        inputTokens[i][j] = to_string(line);
+                        cout << "new value: " << inputTokens[i][j] << endl;
+                    }
+                }
+            }
+
+            inputTokens.erase(inputTokens.begin() + line);
+            line--;        // set line to account for the removed line
+            continue;   // dont check for any more things
         }
     }
 
@@ -121,37 +145,65 @@ vector<vector<string>> Bite::reduceTokens(vector<vector<string>> inputTokens) {
 }
 
 
-//
+// reports any violation of syntax
 bool Bite::tokenError(vector<vector<string>> inputTokens) {
 
     for (vector<string> v : inputTokens) {
-        for (size_t i = 0; i < v.size(); i++) {
-
-            // if the token is blank or the token is a comment
-            if (v[i].compare("") == 0 || (v[i][0] == '/' && v[i][1] == '/')) {
-                break;
-            }
-
-            // if it's the first token of the line and it doesnt match an op code
-            if (i == 0 && codeNum.find(v[i]) == codeNum.end()) {
-                cout << "ERROR: unknown token " << v[i] << endl;
-                return false;
-            } else {
-                continue;
-            }
-
-            // if it's a register and a valid register
-            if (v[i][0] == '$' && strtoi(v[i].substr(1)) < sizeof(reg)) {
-                continue;
-            }
-
-            // if it's a number below 255
-            if (strtoi(v[i]) < 255) {
-                continue;
-            }
-
+        
+        // non valid code: return false
+        if (codeNum.find(v[0]) == codeNum.end()) {
+            cout << "unknown op code: " << v[0] << endl;
             return false;
         }
+
+        // check that all registers and numbers are valid
+        for (size_t i = 1; i < v.size(); i++) {
+            if (!(isValidReg(v[i]) || isValidNum(v[i]))) {
+                cout << "unknown register/number: " << v[i] << endl;
+                return false;
+            }
+        }
+
+        // valid code with valid arguments: continue
+        // switch (codeNum[v[0]])
+        // {
+        // case ADD:   case AND:   case OR:
+            
+        //     break;
+        // case:
+
+        // default:
+        //     break;
+        // }
+        
+        
+        // for (size_t i = 0; i < v.size(); i++) {
+
+        //     // if the token is blank or the token is a comment
+        //     if (v[i].compare("") == 0 || (v[i][0] == '/' && v[i][1] == '/')) {
+        //         break;
+        //     }
+
+        //     // if it's the first token of the line and it doesnt match an op code
+        //     if (i == 0 && codeNum.find(v[i]) == codeNum.end()) {
+        //         cout << "ERROR: unknown token " << v[i] << endl;
+        //         return false;
+        //     } else {
+        //         continue;
+        //     }
+
+        //     // if it's a register and a valid register
+        //     if (v[i][0] == '$' && strtoi(v[i].substr(1)) < sizeof(reg)) {
+        //         continue;
+        //     }
+
+        //     // if it's a number below 255
+        //     if (strtoi(v[i]) < 255) {
+        //         continue;
+        //     }
+
+        //     return false;
+        // }
     }
 
     return true;
@@ -166,7 +218,30 @@ bool Bite::tokenError(vector<vector<string>> inputTokens) {
 
 
 
+bool Bite::isValidReg(string token) {
+    if (token[0] == '$' && strtoi(token.substr(1)) < sizeof(reg)) {
+       
+        return true;
+    } else {
 
+         if (token[0] == '$')  
+            cout << "dollar sign check" << endl;
+        
+        cout << "substr: " << token.substr(1) << endl;
+        cout << "num check: " << strtoi(token.substr(1)) << endl;
+        
+
+        cout << "reg return false" << endl;
+        return false;
+    }
+}
+
+bool Bite::isValidNum(string token) {
+    if (strtoi(token) < 255) 
+        return true;
+    else
+        return false;
+}
 
 
 
@@ -180,15 +255,18 @@ bool Bite::tokenError(vector<vector<string>> inputTokens) {
 size_t strtoi(string s) {
 
     size_t ret = 0;
-    size_t mult = 1;
 
-    for (auto i = s.size() - 2; i >= 0; i--, mult *= 10) {
+    for (auto i = 0; i < s.size(); i++) {
+
+        cout << "character: " <<s [i] << endl;
+
+        ret *= 10;
 
         // if a character is not a number
         if (s[i] < 48 || s[i] > 57)
             return SIZE_T_MAX;
         else
-            ret += s[i] * mult;
+            ret += s[i];
    } 
 
    return ret;
