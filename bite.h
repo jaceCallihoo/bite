@@ -1,4 +1,5 @@
 #include "line.h"
+#include "bluePrint.h"
 
 #include <string>
 #include <unordered_map>
@@ -27,8 +28,9 @@ class Bite {
 
         vector<string> fileToString(string fileName);
         vector<vector<string>> tokenize(vector<string> inputText);
-        bool tokenError(vector<vector<string>> inputTokens);
         vector<vector<string>> reduceTokens(vector<vector<string>> inputTokens);
+        bool tokenError(vector<vector<string>> inputTokens);
+        void toLines(vector<vector<string>> inputTokens);
 
         bool isValidReg(string token);
         bool isValidNum(string token);
