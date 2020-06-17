@@ -5,7 +5,7 @@
 <img src="https://svgshare.com/i/M6z.svg">
 
 <h2>Usage</h2>
-<p>To use Bite: ethier clone the repository or access it here https://repl.it/@JaceCallihoo/Bite-Programming-Language#bite.txt at repl.it. From there, modify the bite.txt file to run your assembly code</p>
+<p>To use Bite: ethier clone the repository or access it here https://repl.it/@JaceCallihoo/Bite-Programming-Language#bite.txt at repl.it. From there, modify the bite.txt file to run your assembly code.</p>
 
 <h2>Author</h2>
 <p>Jace Callihoo - https://jacecallihoo.com/</p>
