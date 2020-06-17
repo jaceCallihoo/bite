@@ -8,12 +8,16 @@ using namespace std;
 int main()
 {
 	// construct the Bite object
-	Bite b("bite.txt");
-
-	return 0;
+	Bite B("bite.txt");
 
 	// execute the object repeatedly until the bite program is over
-	while(b.next());
+	//while(B.execute());
+
+	for (int i = 0; i < 4; i++) {
+		B.execute();
+	}
+
+	B.print();
 
     return 0;
 }

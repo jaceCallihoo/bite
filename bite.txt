@@ -1,6 +1,7 @@
-MOV $1 $2
-J name
-ADD $1 $2 $3 // nasehuoneuh
+ADD $5 $7 3 // nasehuoneuh
+ADD $5 $5 $5
 
-name:
-ADD $3 $3 $3
+
+MOV $5 10
+MOV $6 15
+

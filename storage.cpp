@@ -150,3 +150,139 @@ Line::Line(byte in, arg a0, arg a1, arg a2) {
 // 	}
 // }
 
+
+
+
+reports any violation of syntax
+bool Bite::tokenError(vector<vector<string>> inputTokens) {
+
+    for (size_t i = 0; i < inputTokens.size(); i++) {
+        
+        // non valid code: return false
+        if (codeNum.find(inputTokens[i][0]) == codeNum.end()) {
+            cout << "unknown op code \"" << inputTokens[i][0] << "\"" << endl;
+            return false;
+        }
+
+        // check that all registers and numbers are valid
+        for (size_t j = 1; i < inputTokens[i].size(); j++) {
+            if (!(isValidReg(inputTokens[i][j]) || isValidNum(inputTokens[i][j]))) {
+                cout << "unknown register/number \"" << inputTokens[i][j] << "\"" << endl;
+                return false;
+            }
+        }
+
+
+
+
+        valid code with valid arguments: continue
+        switch (codeNum[v[0]])
+        {
+        case ADD: 
+            if (v.size() != 4) { cout << "Unknown expression on line: " << i << endl; }
+            break;  
+        
+        case AND: 
+
+            break;  
+        
+        case OR:
+            
+            break;
+        case BEQ:
+
+            break;
+
+        default:
+            break;
+        }
+        
+        
+        for (size_t i = 0; i < v.size(); i++) {
+
+            // if the token is blank or the token is a comment
+            if (v[i].compare("") == 0 || (v[i][0] == '/' && v[i][1] == '/')) {
+                break;
+            }
+
+            // if it's the first token of the line and it doesnt match an op code
+            if (i == 0 && codeNum.find(v[i]) == codeNum.end()) {
+                cout << "ERROR: unknown token " << v[i] << endl;
+                return false;
+            } else {
+                continue;
+            }
+
+            // if it's a register and a valid register
+            if (v[i][0] == '$' && strtoi(v[i].substr(1)) < sizeof(reg)) {
+                continue;
+            }
+
+            // if it's a number below 255
+            if (strtoi(v[i]) < 255) {
+                continue;
+            }
+
+            return false;
+        }
+     }
+
+    // return true;
+}
+
+
+
+
+
+
+// helps turn strings into integers
+size_t strtoi(string s) {
+
+    size_t ret = 0;
+
+    for (auto i = 0; i < s.size(); i++) {
+
+        cout << "character: " <<s [i] << endl;
+
+        ret *= 10;
+
+        // if a character is not a number
+        if (s[i] < 48 || s[i] > 57)
+            return SIZE_T_MAX;
+        else
+            ret += s[i] - 48;
+   } 
+
+   return ret;
+}
+
+
+
+
+// bool Bite::isValidReg(string token) {
+//     if (token[0] == '$' && strtoi(token.substr(1)) < sizeof(reg)) {
+       
+//         return true;
+//     } else {
+
+//          if (token[0] == '$')  
+//             cout << "dollar sign check" << endl;
+        
+//         cout << "substr: " << token.substr(1) << endl;
+//         cout << "num check: " << strtoi(token.substr(1)) << endl;
+        
+
+//         cout << "reg return false" << endl;
+//         return false;
+//     }
+// }
+
+// bool Bite::isValidNum(string token) {
+//     if (strtoi(token) < 255) 
+//         return true;
+//     else
+//         return false;
+// }
+
+
+
