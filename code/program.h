@@ -19,6 +19,7 @@ private:
     vector<vector<string>> printInstructions;
 
 public:
+    Program();
     bool execute();
     void addLine(Line line);
     void addPrintTokens(vector<vector<string>> printTokens);

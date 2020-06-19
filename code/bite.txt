@@ -21,7 +21,6 @@
 // and a number. 
 
 ///////////////////////////////// EXAMPLE PROGRAM ///////////////////////////////////////////////////////
-
 // This is a basic assembly style multiplication function.
 // It takes two arguments (the multiplier and multiplicand)
 // in registers $0 and $1. The register $2 is used as an

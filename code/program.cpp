@@ -3,6 +3,15 @@
 #include <iostream>
 #include <iomanip>
 
+Program::Program() {
+
+    pc = 0;
+    sp = 0;
+
+    for (byte r : reg)
+        r = 0;
+}
+
 bool Program::execute() {
 
     // execute line[pc]
