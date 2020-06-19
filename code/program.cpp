@@ -1,6 +1,7 @@
 #include "program.h"
 
 #include <iostream>
+#include <iomanip>
 
 bool Program::execute() {
 
@@ -47,23 +48,63 @@ void Program::addLine(Line line) {
         instruction.push_back(line);
 }
 
+void Program::addPrintTokens(vector<vector<string>> printTokens) {
+    printInstructions = printTokens;
+    printInstructions.push_back({"J", "255"});
+}
+
 void Program::print() {
 
-    for (Line L : instruction) {
-        cout << L.name << ": " << (int)L.arg[0] << ", " << (int)L.arg[1] << ", " << (int)L.arg[2] << endl;
+    // print pc and instruction
+    int pcPrintStart, pcPrintEnd;
+    setPrintItters(pcPrintStart, pcPrintEnd);
+
+    for (size_t pcPrintCurrent = pcPrintStart; pcPrintCurrent < pcPrintEnd; pcPrintCurrent++) {
+        
+        if (pcPrintCurrent == (size_t)pc) {
+            cout << ">" << setw(3) << right << pcPrintCurrent << " ";
+        } else {
+            cout << setw(4) << right << pcPrintCurrent << " ";
+        }
+        
+
+        for (string s : printInstructions[pcPrintCurrent]) {
+            cout << setw(5) << s;
+        }
+        cout << endl;
     }
 
-    cout << "pc: " << (int)pc << endl;
-    cout << "sp: " << (int)sp << endl;
-    cout << "reg:";
-    for (size_t i = 0; i < 8; i++) { cout << " " << (int)reg[i]; } cout << endl;
+    cout << endl << "--------------------------------------------------" << endl;
+
+    for (size_t i = 0; i < sizeof(reg); i++) { cout << " $" << i << "[" << (int)reg[i] << "]"; } cout << endl;
+
+    cout << "--------------------------------------------------" << endl << endl;
+}
+
+void Program::setPrintItters(int &start, int &end) {
+    
+    // if the size of the program is less then five lines
+    if (instruction.size() < 5) {
+        start = 0;
+        end = instruction.size();
+        return;
+    } else {
+        if ((int)pc - 2 < 0) {
+            start = 0;
+            end = start + 5;
+        } else if ((int)pc + 3 > instruction.size()) {
+            end = instruction.size();
+            start = end - 5;
+        } else {
+            start = pc - 2;
+            end = pc + 3;
+        }
+    }
 }
 
 // bite instructions
 
 void Program::add1(byte a0, byte a1, byte a2) {
-
-    cout << "add1 " << (int)a0 << " " << (int)a1 << " " << (int)a2 << endl;
 
     reg[a0] = (byte)reg[a1] + (byte)reg[a2];
 }
@@ -95,26 +136,26 @@ void Program::or2(byte a0, byte a1, byte a2) {
 
 
 void Program::beq1(byte a0, byte a1, byte a2) {
-    if (reg[a1] == reg[a2])
-        pc = reg[a0] - 1;
+    if (reg[a0] == reg[a1])
+        pc = reg[a2] - 1;
 }
 
 
 void Program::beq2(byte a0, byte a1, byte a2) {
-    if (reg[a1] == a2)
-        pc = reg[a0] - 1;
+    if (reg[a0] == reg[a1])
+        pc = a2 - 1;
 }
 
 
 void Program::beq3(byte a0, byte a1, byte a2) {
-    if (reg[a1] == reg[a2])
-        pc = a0 - 1;
+    if (reg[a0] == a1)
+        pc = reg[a2] - 1;
 }
 
 
 void Program::beq4(byte a0, byte a1, byte a2) {
-    if (reg[a1] == a2)
-        pc = a0 - 1;
+    if (reg[a0] == a1)
+        pc = a2 - 1;
 }
 
 
@@ -129,19 +170,14 @@ void Program::jump2(byte a0, byte a1, byte a2) {
 
 
 void Program::move1(byte a0, byte a1, byte a2) {
-    cout << "move1 " << (int)a0 << " " << (int)a1 << endl;
-
-    cout << "before: " <<  (int)reg[a0];
+  
 
     reg[a0] = reg[a1];
 
-    cout << " after: " << (int)reg[a0] << endl;
 }
 
 
 void Program::move2(byte a0, byte a1, byte a2) {
-        cout << "move2 " << (int)a0 << " " << (int)a1 << endl;
-
 
     reg[a0] = a1;
 }

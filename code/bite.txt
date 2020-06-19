@@ -1,7 +1,48 @@
-ADD $5 $7 3 // nasehuoneuh
-ADD $5 $5 $5
+///////////////////////////////////// OVERVIEW //////////////////////////////////////////////////////
+// Bite is a small, assembly style programming language built by myself (Jace) as a personal project.
+// It's gone through a few itterations, this being the mose recent. Bite is written in C++ and takes
+// input from a textfile (bite.txt by default) and compiles in into executable code. 
 
+///////////////////////////////////// GRAMMER ///////////////////////////////////////////////////////
+// The basic format of a bite instruction is: 
+//    INSTRUCTION VALUE VALUE VALUE
+// There are currently 10 instructions in the bite language:
+//   ADD - takes two values and stores them in a register
+//   AND - taks the logical and of two values and stores the result into a register
+//   OR - taks the logical or of two values and stores the result into a register
+//   BEQ - Branches to an address if the two given values are equal
+//   J - Jumps to given address
+//   MOV - Moves value into register
+//   SL - Shifts the bits of a value left n times where n is the last argument
+//   SR - Shifts the bits of a value right n times where n is the last argument
+//   SB - Stores a byte to memory
+//   LB - Loads a byte from memory
+// A value can either be a register or a number. A register is denoted by a dollar sign
+// and a number. 
 
-MOV $5 10
-MOV $6 15
+///////////////////////////////// EXAMPLE PROGRAM ///////////////////////////////////////////////////////
 
+// This is a basic assembly style multiplication function.
+// It takes two arguments (the multiplier and multiplicand)
+// in registers $0 and $1. The register $2 is used as an
+// itterator in the function loop and the return value
+// is stored in $7.
+
+MOV $0 4                // Setup: move arguments
+MOV $1 3                // into registers
+
+// arguments: $0[multiplicand], $1[multiplier]
+// uses: $2[itterator], $7[returnVal]
+mult:
+
+MOV $7 0                // set return to 0
+MOV $2 0                // itterator
+
+mult_inner:
+
+BEQ $2 $1 mult_return   // if (itterator == multiplier) return
+ADD $7 $7 $0            // returnVal += multiplicand
+ADD $2 $2 1             // itterator++
+J mult_inner
+
+mult_return:

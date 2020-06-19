@@ -1,10 +1,8 @@
 #include "bite.h"
 
-
 #include <string>
 #include <vector>
 #include <iostream>
-
 
 Bite::Bite(string fileName = "bite.txt") {
 
@@ -31,10 +29,3 @@ bool Bite::execute() {
 void Bite::print() {
     program.print();
 }
-
-
-
-
-
-
-

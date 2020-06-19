@@ -1,23 +1,40 @@
 #include "bite.h"
-// #include "line.h"
 
+#include <time.h>
 #include <iostream>
 
 using namespace std;
+
+void print(Bite B);
+void sleep(int milisec);
 
 int main()
 {
 	// construct the Bite object
 	Bite B("bite.txt");
 
-	// execute the object repeatedly until the bite program is over
-	//while(B.execute());
+	// print start state
+	print(B);
 
-	for (int i = 0; i < 4; i++) {
-		B.execute();
-	}
-
-	B.print();
+	// print throughout execution
+	while (B.execute())
+		print(B);
+	
+	// print end state
+	print(B);
 
     return 0;
+}
+
+void print(Bite B) {
+	cout << "\033[2J\033[1;1H"; // clear terminal
+	B.print();					// print
+	sleep(500);					// sleep
+}
+
+void sleep(int milisec) {
+	struct timespec req = {0};
+	req.tv_sec = 0;
+	req.tv_nsec = milisec * 1000000L;
+	nanosleep(&req, (struct timespec *)NULL);
 }

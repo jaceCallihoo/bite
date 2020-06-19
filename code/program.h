@@ -3,7 +3,6 @@
 #include "line.h"
 
 #include <vector>
-#include <unordered_map>
 
 #define byte unsigned char
 
@@ -12,16 +11,19 @@ private:
 
     byte pc;			// program counter
     byte sp;			// stack pointer    
-    byte reg[8] = {1,2,3,4};		// registers
+    byte reg[8];		// registers
     char stack[256];	// stack
     char mem[256];   	// memory
 
     vector<Line> instruction;
+    vector<vector<string>> printInstructions;
 
 public:
     bool execute();
     void addLine(Line line);
+    void addPrintTokens(vector<vector<string>> printTokens);
     void print();
+    void setPrintItters(int &start, int &end);
 
 
 

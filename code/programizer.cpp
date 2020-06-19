@@ -10,10 +10,14 @@ Program Programizer::programize(vector<vector<string>> tokens) {
     for (vector<string> v : tokens) { for (string s : v) { cout << " <" << s << "> "; } cout << endl; } cout << endl;
     cout << "::::Removed Comments" << endl;
 
+    tokens = removeGaps(tokens);
+
     // change all the addresses in the tokens to numbers
     tokens = addressToNum(tokens);
     for (vector<string> v : tokens) { for (string s : v) { cout << " <" << s << "> "; } cout << endl; } cout << endl;
     cout << endl << "::::Adresses changed to numbers" << endl << endl;
+
+    tokens = removeGaps(tokens);
 
     return tokenToProgram(tokens);
 }
@@ -32,18 +36,27 @@ vector<vector<string>> Programizer::removeComments(vector<vector<string>> tokens
     return tokens;
 }
 
+vector<vector<string>> Programizer::removeGaps(vector<vector<string>> tokens) {
+
+    for (size_t i = 0; i < tokens.size(); i++) {
+        if (tokens[i].size() == 0) {
+            tokens.erase(tokens.begin() + i);
+            i--; // account for the erased line
+        }
+    }
+
+    return tokens;
+
+}
+
 vector<vector<string>> Programizer::addressToNum(vector<vector<string>> tokens) {
 
-    size_t emptyLineCount = 0;
+    size_t addressLineCount = 0;
 
     // itterate through every line of the "file"
     for (size_t fileLine = 0; fileLine < tokens.size(); fileLine++) {
 
-        // if it's an empty line
-        if (tokens[fileLine].size() == 0) {
-            emptyLineCount++;
-        }
-
+        // for each token in the given line
         for (string token : tokens[fileLine]) {
             
             
@@ -53,7 +66,8 @@ vector<vector<string>> Programizer::addressToNum(vector<vector<string>> tokens) 
                 cout << "address at: " << fileLine << endl;
 
                 size_t addressLine = fileLine;
-                size_t addressNum = fileLine - emptyLineCount;
+                size_t addressNum = fileLine - addressLineCount;
+                addressLineCount++;
 
                 // erase the address line
                 //tokens.erase(tokens.begin() + fileLine, tokens.end());
@@ -82,6 +96,8 @@ Program Programizer::tokenToProgram(vector<vector<string>> tokens) {
     Program P;
     BluePrint BP;
 
+    tokens.push_back({"J", "255"});
+
     for (size_t line = 0; line < tokens.size(); line++) {
 
         cout << "line num: " << line << endl;
@@ -89,6 +105,15 @@ Program Programizer::tokenToProgram(vector<vector<string>> tokens) {
         // map line to blue print
         P.addLine(BP.tokenArrayToLine(tokens[line]));
     }
+
+    for (int i = 0; i < tokens.size(); i++) {
+        for (int j = 0; j < tokens[i].size(); j++) {
+            cout << tokens[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    P.addPrintTokens(tokens);
 
     return P;
 }

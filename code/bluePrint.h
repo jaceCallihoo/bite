@@ -34,7 +34,7 @@ private:
         {"ADD", {{{REG, REG, REG}, "add1"}, {{REG, REG, NUM}, "add2"}}},
         {"AND", {{{REG, REG, REG}, "and1"}, {{REG, REG, NUM}, "and2"}}},
         {"OR",  {{{REG, REG, REG}, "or1"},  {{REG, REG, NUM}, "or2"}}},
-        {"BEQ", {{{REG, REG, REG}, "beq1"}, {{REG, REG, NUM}, "beq2"}, {{NUM, REG, REG}, "beq3"}, {{NUM, REG, NUM}, "beq4"}}},
+        {"BEQ", {{{REG, REG, REG}, "beq1"}, {{REG, REG, NUM}, "beq2"}, {{REG, NUM, REG}, "beq3"}, {{REG, NUM, NUM}, "beq4"}}},
         {"J",   {{{REG}, "jump1"}, {{NUM}, "jump2"}}},
         {"MOV", {{{REG, REG}, "move1"}, {{REG, NUM}, "move2"}}},
         {"SL", {{{REG, REG, REG}, "shiftLeft1"}, {{REG, REG, NUM}, "shiftLeft2"}}},

@@ -13,6 +13,7 @@ private:
 public:
     Program programize(vector<vector<string>> tokens);
     vector<vector<string>> removeComments(vector<vector<string>> tokens);
+    vector<vector<string>> removeGaps(vector<vector<string>> tokens);
     vector<vector<string>> addressToNum(vector<vector<string>> tokens);
     Program tokenToProgram(vector<vector<string>> tokens);
 };
